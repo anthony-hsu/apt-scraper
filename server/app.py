@@ -11,7 +11,7 @@ def index():
 
 @app.route('/scrape')
 def scrape():
-  return runScraper("Capitol Hill", "Seattle", "WA", "1", 2400, 600)
+  return runScraper("Capitol Hill", "Seattle", "WA", "", 2500, 700)
 
 if __name__ == '__main__':
     app.run(debug=True)
