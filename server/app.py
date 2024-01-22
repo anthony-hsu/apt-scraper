@@ -9,9 +9,9 @@ CORS(app)
 def index():
     return 'Hello, Flask!'
 
-@app.route('/scrape')
-def scrape():
-  return runScraper("Capitol Hill", "Seattle", "WA", "", 2500, 700)
+@app.route('/scrape/<neighborhood>/<city>/<state>/<beds>/<maxPrice>/<minSqft>/')
+def scrape(neighborhood=None, city=None, state=None, beds=None, maxPrice=None, minSqft=None):
+  return runScraper(neighborhood, city, state, beds, maxPrice, minSqft)
 
 if __name__ == '__main__':
     app.run(debug=True)

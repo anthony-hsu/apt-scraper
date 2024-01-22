@@ -12,7 +12,7 @@ import locale
 
 
 # Global
-BR = ["all", "bed0", "bed1", "bed2"]
+BR = ["bed0", "bed1", "bed2", "all"]
 aptData = []
 chrome_options = Options()
 chrome_options.add_argument('--headless')
@@ -63,7 +63,7 @@ def scrapeApartment(numBedsString, maxPrice, minSqft):
 def runScraper(neighborhood, city, state, numBeds, maxPrice, minSqft):
   # # Parameters
   url = f"https://www.apartments.com/{neighborhood.replace(" ", "-")}-{city}-{state}/pet-friendly-dog/washer-dryer/"
-  numBedsString = BR[int(numBeds)+1 if len(numBeds) > 0 else 0]
+  numBedsString = BR[int(numBeds)]
   driver.get(url)
   wait.until(EC.presence_of_element_located((By.CLASS_NAME, "placard")))
   cards = driver.find_elements(By.CLASS_NAME, "placard")
