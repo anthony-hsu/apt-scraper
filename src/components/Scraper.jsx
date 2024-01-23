@@ -8,6 +8,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import ApartmentDataTable from "./ApartmentDataTable";
 
 const ScraperComponent = () => {
   // States
@@ -46,7 +47,7 @@ const ScraperComponent = () => {
       ) : (
         <>
           {aptData?.length > 0 ? (
-            <div>Data Loaded!</div>
+            <ApartmentDataTable aptData={aptData}/>
           ) : (
             <div className="scraper-container">
               <TextField
