@@ -169,7 +169,7 @@ function ApartmentDataTable(props) {
                   <TableCell align="right">{row.baths}</TableCell>
                   <TableCell align="right">{row.price}</TableCell>
                   <TableCell align="right">{row.sqft}</TableCell>
-                  <TableCell align="right">{row.sqft / Number(row.price.replace(/[^0-9.-]+/g,""))}</TableCell>
+                  <TableCell align="right">{Math.round(row.ratio * 1000)/1000}</TableCell>
                   <TableCell align="right">{row.availability}</TableCell>
                 </TableRow>
               );

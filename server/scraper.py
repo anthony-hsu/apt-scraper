@@ -55,7 +55,7 @@ def scrapeApartment(numBedsString, maxPrice, minSqft):
         data["sqft"] = unitSqft.get_attribute("textContent").strip()
         unitAvail = unitRow.find_element(By.XPATH, ".//span[contains(@class,'dateAvailable')]")
         data["availability"] = unitAvail.get_attribute("textContent").strip().split("\n")[-1].strip()
-        # data["ratio"] = int(data["sqft"]) / locale.atof(data["price"].strip("$").replace(",", ""))
+        data["ratio"] = int(data["sqft"].replace(",","")) / locale.atof(data["price"].strip("$").replace(",", ""))
         if isValid(data, maxPrice, minSqft):
           data["id"] = len(aptData)
           aptData.append(data)
