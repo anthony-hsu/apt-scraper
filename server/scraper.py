@@ -18,51 +18,50 @@ chrome_options = Options()
 chrome_options.add_argument('--headless')
 user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
 chrome_options.add_argument('user-agent={0}'.format(user_agent))
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-wait = WebDriverWait(driver, 10)
 
 
 # Functions
-
-def isValid(data, maxPrice, minSqft): 
-  if (locale.atof(data["price"].strip("$").replace(",", "")) > int(maxPrice) or
-      int(data["sqft"]) < int(minSqft)):
-    return False
-  else:
-    return True
-
-def scrapeApartment(numBedsString, maxPrice, minSqft):
-  aptName = driver.find_element(By.ID, "propertyName").get_attribute("textContent").strip()
-  try:
-    element = wait.until(EC.presence_of_element_located((By.ID, "pricingView")))
-    unitArray = element.find_element(By.XPATH, f".//div[@data-tab-content-id='{numBedsString}']").find_elements(By.CLASS_NAME, "hasUnitGrid")
-    for unit in unitArray:
-      modelInfo = unit.find_element(By.CLASS_NAME, "priceGridModelWrapper")
-      modelName = modelInfo.find_element(By.XPATH, ".//span[@class='modelName']").get_attribute("textContent").strip()
-      beds = modelInfo.find_element(By.XPATH, ".//span[@class='detailsTextWrapper']").get_attribute("textContent").strip().split(",")[0].strip()
-      baths = modelInfo.find_element(By.XPATH, ".//span[@class='detailsTextWrapper']").get_attribute("textContent").strip().split(",")[1].strip()
-      unitRows = unit.find_element(By.CLASS_NAME, "unitGridContainer").find_elements(By.XPATH, ".//li[contains(@class, 'unitContainer')]")
-      for unitRow in unitRows:
-        data = {}
-        data["aptName"] = aptName
-        data["modelName"] = modelName
-        data["beds"] = beds
-        data["baths"] = baths
-        data["unit"] = unitRow.get_attribute("data-unit").strip()
-        unitPrice = unitRow.find_element(By.XPATH, ".//div[contains(@class,'pricingColumn')]").find_element(By.XPATH, ".//span[@data-unitname]")
-        data["price"] = unitPrice.get_attribute("textContent").strip()
-        unitSqft = unitRow.find_element(By.XPATH, ".//div[@class = 'sqftColumn column']").find_element(By.XPATH, ".//span[not(@class)]")
-        data["sqft"] = unitSqft.get_attribute("textContent").strip()
-        unitAvail = unitRow.find_element(By.XPATH, ".//span[contains(@class,'dateAvailable')]")
-        data["availability"] = unitAvail.get_attribute("textContent").strip().split("\n")[-1].strip()
-        data["ratio"] = int(data["sqft"].replace(",","")) / locale.atof(data["price"].strip("$").replace(",", ""))
-        if isValid(data, maxPrice, minSqft):
-          data["id"] = len(aptData)
-          aptData.append(data)
-  except:
-    print(f"ERROR: Skipping {aptName}")
-
 def runScraper(neighborhood, city, state, numBeds, maxPrice, minSqft):
+  def isValid(data, maxPrice, minSqft): 
+    if (locale.atof(data["price"].strip("$").replace(",", "")) > int(maxPrice) or
+        int(data["sqft"]) < int(minSqft)):
+      return False
+    else:
+      return True
+
+  def scrapeApartment(numBedsString, maxPrice, minSqft):
+    aptName = driver.find_element(By.ID, "propertyName").get_attribute("textContent").strip()
+    try:
+      element = wait.until(EC.presence_of_element_located((By.ID, "pricingView")))
+      unitArray = element.find_element(By.XPATH, f".//div[@data-tab-content-id='{numBedsString}']").find_elements(By.CLASS_NAME, "hasUnitGrid")
+      for unit in unitArray:
+        modelInfo = unit.find_element(By.CLASS_NAME, "priceGridModelWrapper")
+        modelName = modelInfo.find_element(By.XPATH, ".//span[@class='modelName']").get_attribute("textContent").strip()
+        beds = modelInfo.find_element(By.XPATH, ".//span[@class='detailsTextWrapper']").get_attribute("textContent").strip().split(",")[0].strip()
+        baths = modelInfo.find_element(By.XPATH, ".//span[@class='detailsTextWrapper']").get_attribute("textContent").strip().split(",")[1].strip()
+        unitRows = unit.find_element(By.CLASS_NAME, "unitGridContainer").find_elements(By.XPATH, ".//li[contains(@class, 'unitContainer')]")
+        for unitRow in unitRows:
+          data = {}
+          data["aptName"] = aptName
+          data["modelName"] = modelName
+          data["beds"] = beds
+          data["baths"] = baths
+          data["unit"] = unitRow.get_attribute("data-unit").strip()
+          unitPrice = unitRow.find_element(By.XPATH, ".//div[contains(@class,'pricingColumn')]").find_element(By.XPATH, ".//span[@data-unitname]")
+          data["price"] = unitPrice.get_attribute("textContent").strip()
+          unitSqft = unitRow.find_element(By.XPATH, ".//div[@class = 'sqftColumn column']").find_element(By.XPATH, ".//span[not(@class)]")
+          data["sqft"] = unitSqft.get_attribute("textContent").strip()
+          unitAvail = unitRow.find_element(By.XPATH, ".//span[contains(@class,'dateAvailable')]")
+          data["availability"] = unitAvail.get_attribute("textContent").strip().split("\n")[-1].strip()
+          data["ratio"] = int(data["sqft"].replace(",","")) / locale.atof(data["price"].strip("$").replace(",", ""))
+          if isValid(data, maxPrice, minSqft):
+            data["id"] = len(aptData)
+            aptData.append(data)
+    except Exception as error:
+      print(f"ERROR occurred scraping {aptName}:", error)
+
+  driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+  wait = WebDriverWait(driver, 10)
   # # Parameters
   url = f"https://www.apartments.com/{neighborhood.replace(" ", "-")}-{city}-{state}/pet-friendly-dog/washer-dryer/"
   numBedsString = BR[int(numBeds)]
