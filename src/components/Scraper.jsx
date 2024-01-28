@@ -12,12 +12,12 @@ import ApartmentDataTable from "./ApartmentDataTable";
 
 const ScraperComponent = () => {
   // States
-  const [neighborhood, setNeighborhood] = useState("Capitol Hill");
+  const [neighborhood, setNeighborhood] = useState("");
   const [city, setCity] = useState("Seattle");
   const [state, setState] = useState("WA");
   const [beds, setBeds] = useState(3);
   const [maxPrice, setMaxPrice] = useState("2500");
-  const [minSqft, setMinSqft] = useState("700");
+  const [minSqft, setMinSqft] = useState("600");
   const [aptData, setAptData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,6 +40,15 @@ const ScraperComponent = () => {
 
   return (
     <>
+      <Button
+        className="btn-new-search"
+        onClick={() => {
+          setAptData([]);
+          setIsLoading(false);
+        }}
+      >
+        New Search
+      </Button>
       <h1>Apartment Scraper</h1>
 
       {isLoading ? (
@@ -47,7 +56,7 @@ const ScraperComponent = () => {
       ) : (
         <>
           {aptData?.length > 0 ? (
-            <ApartmentDataTable aptData={aptData}/>
+            <ApartmentDataTable aptData={aptData} />
           ) : (
             <div className="scraper-container">
               <TextField

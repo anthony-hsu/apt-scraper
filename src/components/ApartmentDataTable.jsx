@@ -116,7 +116,7 @@ function ApartmentDataTable(props) {
     { id: "bath", numeric: false, disablePadding: true, label: "Baths" },
     { id: "price", numeric: true, disablePadding: true, label: "Price" },
     { id: "sqft", numeric: true, disablePadding: true, label: "Sq. Ft." },
-    { id: "ratio", numeric: true, disablePadding: true, label: "Ratio" },
+    { id: "ratio", numeric: true, disablePadding: true, label: "Value" },
     {
       id: "availability",
       numeric: false,
@@ -169,7 +169,7 @@ function ApartmentDataTable(props) {
                   <TableCell align="right">{row.baths}</TableCell>
                   <TableCell align="right">{row.price}</TableCell>
                   <TableCell align="right">{row.sqft}</TableCell>
-                  <TableCell align="right">{Math.round(row.ratio * 1000)/1000}</TableCell>
+                  <TableCell align="right">{Math.round(row.ratio * 1000)/100}</TableCell>
                   <TableCell align="right">{row.availability}</TableCell>
                 </TableRow>
               );
