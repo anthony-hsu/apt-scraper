@@ -63,7 +63,7 @@ def runScraper(neighborhood, city, state, numBeds, maxPrice, minSqft):
   driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
   wait = WebDriverWait(driver, 10)
   # # Parameters
-  url = f"https://www.apartments.com/{neighborhood.replace(" ", "-")}-{city}-{state}/pet-friendly-dog/washer-dryer/"
+  url = f"https://www.apartments.com/{neighborhood.replace(' ', '-')}-{city}-{state}/pet-friendly-dog/washer-dryer/"
   numBedsString = BR[int(numBeds)]
   driver.get(url)
   wait.until(EC.presence_of_element_located((By.CLASS_NAME, "placard")))
