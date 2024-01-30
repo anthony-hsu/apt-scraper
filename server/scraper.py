@@ -32,6 +32,9 @@ def runScraper(neighborhood, city, state, numBeds, maxPrice, minSqft):
   def scrapeApartment(numBedsString, maxPrice, minSqft):
     aptName = driver.find_element(By.ID, "propertyName").get_attribute("textContent").strip()
     try:
+      pricingViewExists = True if len(driver.find_elements(By.ID, "pricingView")) > 0 else False
+      if not pricingViewExists:
+        return
       element = wait.until(EC.presence_of_element_located((By.ID, "pricingView")))
       unitArray = element.find_element(By.XPATH, f".//div[@data-tab-content-id='{numBedsString}']").find_elements(By.CLASS_NAME, "hasUnitGrid")
       for unit in unitArray:
@@ -71,7 +74,9 @@ def runScraper(neighborhood, city, state, numBeds, maxPrice, minSqft):
   original_window = driver.current_window_handle
   listingUrls = []
   for card in cards:
-    listingUrls.append(card.get_attribute("data-url"))
+    cardUrl = card.get_attribute("data-url")
+    if cardUrl:
+      listingUrls.append(cardUrl)
   for listingUrl in listingUrls:
     try:
       driver.switch_to.new_window('tab')
@@ -80,14 +85,12 @@ def runScraper(neighborhood, city, state, numBeds, maxPrice, minSqft):
       scrapeApartment(numBedsString, maxPrice, minSqft)
       driver.close()
       driver.switch_to.window(original_window)
-    except:
-      print(f"Apartment page not found... skipping!")
+    except Exception as error:
+      print(error)
     finally:
       continue  
 
   jsonData = json.dumps(aptData)
-  # df = pd.read_json(jsonData)
-  # df.to_csv(f"{neighborhood}_{"all" if len(numBeds) == 0 else f"{numBeds}BR"}_{maxPrice}.csv", index=False)
 
   driver.quit()
 

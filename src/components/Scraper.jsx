@@ -26,7 +26,7 @@ const ScraperComponent = () => {
     try {
       axios
         .get(
-          `http://127.0.0.1:5000/scrape/${neighborhood}/${city}/${state}/${beds}/${maxPrice}/${minSqft}`
+          `http://127.0.0.1:8000/scrape/${neighborhood}/${city}/${state}/${beds}/${maxPrice}/${minSqft}`
         )
         .then((response) => {
           console.log(response.data);
