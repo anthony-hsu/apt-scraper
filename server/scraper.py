@@ -14,10 +14,11 @@ import locale
 # Global
 BR = ["bed0", "bed1", "bed2", "all"]
 aptData = []
-chrome_options = Options()
+service = Service()
+chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
-user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
-chrome_options.add_argument('user-agent={0}'.format(user_agent))
+# user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+# chrome_options.add_argument('user-agent={0}'.format(user_agent))
 
 
 # Functions
@@ -63,7 +64,7 @@ def runScraper(neighborhood, city, state, numBeds, maxPrice, minSqft):
     except Exception as error:
       print(f"ERROR occurred scraping {aptName}:", error)
 
-  driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+  driver = webdriver.Chrome(service=service, options=chrome_options)
   wait = WebDriverWait(driver, 10)
   # # Parameters
   url = f"https://www.apartments.com/{neighborhood.replace(' ', '-')}-{city}-{state}/pet-friendly-dog/washer-dryer/"
