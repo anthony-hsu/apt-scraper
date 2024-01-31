@@ -6,6 +6,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+from fake_useragent import UserAgent
 import pandas as pd
 import json
 import locale
@@ -17,8 +18,8 @@ aptData = []
 service = Service()
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
-user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
-chrome_options.add_argument('user-agent={0}'.format(user_agent))
+ua = UserAgent()
+chrome_options.add_argument('user-agent={0}'.format(ua.chrome))
 
 
 # Functions
