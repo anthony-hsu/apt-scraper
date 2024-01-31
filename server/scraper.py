@@ -17,8 +17,8 @@ aptData = []
 service = Service()
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
-# user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
-# chrome_options.add_argument('user-agent={0}'.format(user_agent))
+user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36'
+chrome_options.add_argument('user-agent={0}'.format(user_agent))
 
 
 # Functions
