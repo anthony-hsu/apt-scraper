@@ -1,11 +1,9 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.service import Service
+# from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
 from fake_useragent import UserAgent
 import json
 import locale
@@ -15,10 +13,11 @@ import locale
 BR = ["bed0", "bed1", "bed2", "all"]
 aptData = []
 service = Service()
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument('--headless')
+# chrome_options = webdriver.ChromeOptions()
+options = webdriver.FirefoxOptions()
+options.add_argument('--headless')
 ua = UserAgent()
-chrome_options.add_argument('user-agent={0}'.format(ua.chrome))
+options.add_argument('user-agent={0}'.format(ua.firefox))
 
 
 # Functions
@@ -64,7 +63,8 @@ def runScraper(neighborhood, city, state, numBeds, maxPrice, minSqft):
     except Exception as error:
       print(f"ERROR occurred scraping {aptName}:", error)
 
-  driver = webdriver.Chrome(service=service, options=chrome_options)
+  driver = webdriver.Firefox(service=service, options=options)
+  # driver = webdriver.Chrome(service=service, options=chrome_options)
   wait = WebDriverWait(driver, 10)
   # # Parameters
   url = f"https://www.apartments.com/{neighborhood.replace(' ', '-')}-{city}-{state}/pet-friendly-dog/washer-dryer/"
