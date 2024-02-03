@@ -1,6 +1,5 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service
-# from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,8 +12,8 @@ import locale
 BR = ["bed0", "bed1", "bed2", "all"]
 aptData = []
 service = Service()
-# chrome_options = webdriver.ChromeOptions()
 options = webdriver.FirefoxOptions()
+options.add_argument('--no-sandbox')
 options.add_argument('--headless')
 ua = UserAgent()
 options.add_argument('user-agent={0}'.format(ua.firefox))
