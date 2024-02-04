@@ -1,5 +1,5 @@
 from selenium import webdriver
-from selenium.webdriver.firefox.service import Service
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -12,11 +12,12 @@ import locale
 BR = ["bed0", "bed1", "bed2", "all"]
 aptData = []
 service = Service()
-options = webdriver.FirefoxOptions()
+options = webdriver.ChromeOptions()
 options.add_argument('--no-sandbox')
 options.add_argument('--headless')
+options.add_argument('--disable-dev-shm-usage')
 ua = UserAgent()
-options.add_argument('user-agent={0}'.format(ua.firefox))
+options.add_argument('user-agent={0}'.format(ua.chrome))
 
 
 # Functions
@@ -62,8 +63,7 @@ def runScraper(neighborhood, city, state, numBeds, maxPrice, minSqft):
     except Exception as error:
       print(f"ERROR occurred scraping {aptName}:", error)
 
-  driver = webdriver.Firefox(service=service, options=options)
-  # driver = webdriver.Chrome(service=service, options=chrome_options)
+  driver = webdriver.Chrome(service=service, options=options)
   wait = WebDriverWait(driver, 10)
   # # Parameters
   url = f"https://www.apartments.com/{neighborhood.replace(' ', '-')}-{city}-{state}/pet-friendly-dog/washer-dryer/"
