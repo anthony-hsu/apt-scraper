@@ -2,7 +2,7 @@ FROM python:3.10
 
 WORKDIR /app
 
-COPY . /app
+COPY . .
 
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
