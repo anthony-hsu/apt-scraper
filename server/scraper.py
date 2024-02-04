@@ -52,7 +52,7 @@ def runScraper(neighborhood, city, state, numBeds, maxPrice, minSqft):
           unitPrice = unitRow.find_element(By.XPATH, ".//div[contains(@class,'pricingColumn')]").find_element(By.XPATH, ".//span[@data-unitname]")
           data["price"] = unitPrice.get_attribute("textContent").strip()
           unitSqft = unitRow.find_element(By.XPATH, ".//div[@class = 'sqftColumn column']").find_element(By.XPATH, ".//span[not(@class)]")
-          data["sqft"] = unitSqft.get_attribute("textContent").strip()
+          data["sqft"] = unitSqft.get_attribute("textContent").strip().replace(",", "")
           unitAvail = unitRow.find_element(By.XPATH, ".//span[contains(@class,'dateAvailable')]")
           data["availability"] = unitAvail.get_attribute("textContent").strip().split("\n")[-1].strip()
           data["ratio"] = int(data["sqft"].replace(",","")) / locale.atof(data["price"].strip("$").replace(",", ""))
